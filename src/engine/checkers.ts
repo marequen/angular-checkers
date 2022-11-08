@@ -1,4 +1,5 @@
 import * as sr from './sr';
+import * as domUtils from './domUtils';
 import * as srCheckers from './checkersBase';
 import {BoardLocation, PieceType, Player, Square, SquareValue} from "./checkersBase";
 import {Move, SimpleMove, SingleJumpMove} from "./move"
@@ -113,16 +114,16 @@ window.onresize = () => {
 };
 
 function calcBoardExtent(){
-  let top =  sr.getElementByIdOrThrow('mainContentRow');
-  let topContentSize = sr.elementContentSize(top);
+  let top =  domUtils.getElementByIdOrThrow('mainContentRow');
+  let topContentSize = domUtils.elementContentSize(top);
   let extent;
   if (topContentSize.contentHeight > topContentSize.contentWidth){
     // portrait
     extent = topContentSize.contentWidth;
   } else {
     // landscape (or square)
-    let boardContainer =  sr.getElementByIdOrThrow('boardContainer');
-    let boardContainerSize = sr.elementContentSize(boardContainer);
+    let boardContainer =  domUtils.getElementByIdOrThrow('boardContainer');
+    let boardContainerSize = domUtils.elementContentSize(boardContainer);
     extent = Math.min(boardContainerSize.contentHeight, topContentSize.contentWidth);
   }
   return Math.floor(extent);
@@ -327,7 +328,8 @@ class Animator {
   }
 }
 
-const worker = new Worker("checkersWorker.js", {type:'module'});
+//const worker = new Worker("checkersWorker.js", {type:'module'});
+const worker = new Worker(new URL('../app/checkers.worker', import.meta.url));
 
 export var theBoard = new Board();
 
@@ -391,7 +393,7 @@ interface MoveResult {
   forcedJumpMoves: Array<SingleJumpMove>
 }
 
-class Game {
+export class Game {
   player: Player;
   opponent: Player;
   moves: Array<Move> = [];

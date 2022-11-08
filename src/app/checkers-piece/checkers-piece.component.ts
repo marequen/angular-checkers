@@ -8,8 +8,10 @@ import {SquareValue} from '../../engine/checkersBase'
 })
 export class CheckersPieceComponent implements OnInit {
   @Input() value: SquareValue = 0;
+  @Input() active: boolean = false;
 
   svgName: string = 'black';
+  className: string = '';
 
   constructor() { }
 
@@ -30,7 +32,11 @@ export class CheckersPieceComponent implements OnInit {
   
     const svg = svgsPerSquareType[this.value];
     if (svg){
-      this.svgName = svg
+      this.svgName = svg;
+      this.className = 'pieceSvg';
+      if (this.active){
+        this.className += ' active';
+      }
     }
   }
 

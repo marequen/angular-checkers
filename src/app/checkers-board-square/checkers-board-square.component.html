@@ -1,4 +1,6 @@
-
-
-<app-checkers-piece [value]="square.value" *ngIf="square.value > 1" class="pieceSvgContainer"></app-checkers-piece>
+<app-checkers-piece 
+  [value]="square.square.value"
+  [active]="square.active"
+  *ngIf="square.square.value > 1" 
+  class="pieceSvgContainer"></app-checkers-piece>
 

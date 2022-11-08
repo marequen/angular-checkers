@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { theGame, theBoard } from '../../engine/checkers';
+import { theGame } from '../../engine/checkers';
 import { Square, SquareValue } from "../../engine/checkersBase";
+import { SquarePlus } from "../squarePlus";
 
 @Component({
   selector: 'app-checkers-main',
@@ -10,7 +11,7 @@ import { Square, SquareValue } from "../../engine/checkersBase";
 export class CheckersMainComponent implements OnInit {
   restart = false;
   resign = false;
-  rows: Array< Array<Square> > = [];
+  rows: Array< Array<SquarePlus> > = [];
 
   constructor() { 
 
@@ -34,22 +35,13 @@ this.restart = true;
   initializeBoard() {
     this.rows = [];
     for (let i = 0; i < 8; i++) {
-      let row: Array<Square> = [];
+      let row: Array<SquarePlus> = [];
       for (let col = 0; col < 8; col++) {
         let piece = theGame.getBoard().whatsAtRowColumn(i, col);
-        row.push(piece);
+        row.push(new SquarePlus(piece));
       }
       this.rows.push(row)
     }
-    /*
-    const bc = getElementByIdOrThrow('boardContainer');
-    bc.innerHTML = theBoard.draw();
-  
-    const squares = document.querySelectorAll('.square.color1');
-    squares.forEach(square => {
-      square.addEventListener('click', onSquareClicked)
-    });
-    */
   }
 
 }

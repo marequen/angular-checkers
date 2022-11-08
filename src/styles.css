@@ -199,6 +199,13 @@ app-checkers-board-square:before {
   display: block;
   width: 100%;
 }
+.pieceSvg.active {
+  border: gray 2px solid;
+  border-radius: 50%;
+}
+.king {
+ border-width: 6px;
+}
 
 app-checkers-piece {
   display: inline-block

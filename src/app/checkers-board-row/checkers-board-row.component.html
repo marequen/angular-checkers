@@ -1,4 +1,11 @@
 
-<app-checkers-board-square *ngFor="let square of iPieces" [square]="square" class="square color{{square.color}}">
+<app-checkers-board-square 
+  *ngFor="let square of iPieces" 
+  [square]="square" 
+  [attr.data-row]="square.square.loc.row"
+  [attr.data-col]="square.square.loc.col"
+  class="square color{{square.square.color}}"
+  (click)="squareClicked.emit(square.square.loc)"
+  >
 
 </app-checkers-board-square>

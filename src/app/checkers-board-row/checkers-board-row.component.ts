@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {Square} from "../../engine/checkersBase";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SquarePlus } from "../squarePlus";
+import { BoardLocation } from "../../engine/checkersBase";
 
 @Component({
   selector: 'app-checkers-board-row',
@@ -8,11 +9,17 @@ import {Square} from "../../engine/checkersBase";
 })
 export class CheckersBoardRowComponent implements OnInit {
 
-  @Input() iPieces: Array<Square> = [];
+  @Input() iPieces: Array<SquarePlus> = [];
+  @Output() squareClicked: EventEmitter<BoardLocation> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  /*
+  onSquareClicked(){
+    window.alert('onSquareClicked');
+    this.squareClicked.emit();
+  }
+  */
 }
