@@ -2,8 +2,9 @@
   <div class="board">
 
     <app-checkers-board-row 
-      *ngFor="let row of iRows" 
+      *ngFor="let row of rows; index as i" 
       [iPieces]="row"
+      [rowIndex]="i"
       (squareClicked)="onSquareClicked($event)"
       ></app-checkers-board-row>
 

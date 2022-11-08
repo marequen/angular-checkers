@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { SquarePlus } from "../squarePlus";
 import { BoardLocation } from "../../engine/checkersBase";
 import { Game } from "../../engine/checkers";
@@ -19,7 +19,8 @@ export class CheckersBoardComponent implements OnInit {
 
   @Input() iRestart = false;
   @Input() iResign = false;
-  @Input() iRows: Array< Array<SquarePlus> > = [];
+
+  rows: Array< Array<SquarePlus> > = [];
 
   activePiece: BoardLocation | null = null;
   selectedSquares: Array<BoardLocation> = [];
@@ -29,12 +30,55 @@ export class CheckersBoardComponent implements OnInit {
 
   game: Game;
 
-  constructor(private gameService: GameService) { 
+  constructor(private cdr: ChangeDetectorRef, gameService: GameService) { 
     this.game = gameService.getGame();
+    this.game.boardInitializedCallback = this.onBoardInitialized.bind(this);
+    this.game.moveFinishedCallback = this.onMoveFinished.bind(this);
+
+    let theBoard = this.game.getBoard();
+    theBoard.redrawSquareCallback = this.onRedrawSquare.bind(this);
+    this.cdr = cdr;
+  }
+
+  onBoardInitialized(){
+    console.log('onBoardInitialized');
+    this.rows = [];
+    for (let i = 0; i < 8; i++) {
+      let row: Array<SquarePlus> = [];
+      for (let col = 0; col < 8; col++) {
+        let piece = this.game.getBoard().whatsAtRowColumn(i, col);
+        row.push(new SquarePlus(piece));
+      }
+      this.rows.push(row)
+    }
+  }
+
+  onRedrawSquare(square: BoardLocation){
+    let piece = this.game.getBoard().whatsAtRowColumn(square.row, square.col);
+    this.rows[square.row][square.col] = new SquarePlus(piece);
+    console.log('onRedrawSquare', square);
+    console.log('rows', this.rows);
+
+    // Since we land here via a callback, Angular doesn't get a change to run
+    // change detection, so we force it.
+    // Thanks to: https://blog.angular-university.io/how-does-angular-2-change-detection-really-work/
+    this.cdr.detectChanges();
+  }
+
+  onMoveFinished(){
+    // Variables to make legacy code happy
+    let theGame = this.game;
+    let theBoard = this.game.getBoard();
+
+    this.gPlayerPossibleJumpChains = theGame.player.getPossibleJumpMoveChains(theBoard);
+    this.unhighlightSquares();
+    //updateScore();
+    //hideProgressMeter();
   }
 
   ngOnInit(): void {
   }
+
   restart(){
     window.alert('board restart')
   }
@@ -43,7 +87,6 @@ export class CheckersBoardComponent implements OnInit {
   }
 
   onSquareClicked(loc: BoardLocation){
-    window.alert('onSquareClicked ' + loc.row + ',' + loc.col);
 
     // Variables to make legacy code happy
     let theGame = this.game;
@@ -127,11 +170,11 @@ export class CheckersBoardComponent implements OnInit {
   }
 
   getSquare(loc: BoardLocation): SquarePlus {
-    return this.iRows[loc.row][loc.col];
+    return this.rows[loc.row][loc.col];
   }
 
   forEachSquare( f: (s: SquarePlus) => void ): void {
-    for (let row of this.iRows){
+    for (let row of this.rows){
       for (let squarePlus of row){
         f(squarePlus);
       }

@@ -11,14 +11,12 @@ import { SquarePlus } from "../squarePlus";
 export class CheckersMainComponent implements OnInit {
   restart = false;
   resign = false;
-  rows: Array< Array<SquarePlus> > = [];
 
   constructor() { 
 
   }
 
   ngOnInit(): void {
-    this.initializeBoard();
     theGame.start();
   }
 
@@ -30,18 +28,6 @@ this.resign = true;
   onRestart(){
 window.alert('OnRestart')
 this.restart = true;
-  }
-
-  initializeBoard() {
-    this.rows = [];
-    for (let i = 0; i < 8; i++) {
-      let row: Array<SquarePlus> = [];
-      for (let col = 0; col < 8; col++) {
-        let piece = theGame.getBoard().whatsAtRowColumn(i, col);
-        row.push(new SquarePlus(piece));
-      }
-      this.rows.push(row)
-    }
   }
 
 }

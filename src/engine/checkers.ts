@@ -33,6 +33,8 @@ function drawPiece(square: Square): string {
 
 class Board extends srCheckers.Board {
 
+  redrawSquareCallback: (square: BoardLocation) => void = noOp;
+
   static override create(data: Object): Board {
     let result = new Board();
     result.serializeIn(data);
@@ -61,27 +63,13 @@ class Board extends srCheckers.Board {
      }
   }
 
-  draw(){
-    let extent = calcBoardExtent();
-    let html = `<div class='board' style='width:${extent}px; height:${extent}px'>\n`;
-    for (let row = 0; row < 8; row++) {
-       html += "<div>";
-       for (let col = 0; col < 8; col++) {
-         let piece = this.whatsAtRowColumn(row, col);
-         let pieceMarkup = drawPiece(piece);
-         let color = (row + col) % 2;
-         html += `<div class='square color${color}' data-row='${row}' data-col='${col}'>${pieceMarkup}</div>`;
-       }
-       html += "</div>";
-     }
-    html += "</div>"
-    return html;
-  }
-
   redrawSquare(row: number, col: number){
+    this.redrawSquareCallback(new BoardLocation(row, col));
+    /*
     let e = _getPieceContainerElement(row, col);
     const piece = this.whatsAtRowColumn(row, col);
     e.innerHTML = drawPiece(piece);
+    */
   }
 
   /** Functions used by editor.js -- maybe move these */
@@ -260,7 +248,7 @@ class Animator {
   static _movePiece(board: Board, startRow: number, startCol: number, row: number, col: number): Promise<Square> {
     return new Promise(resolve => {
       // get the piece element
-      const pieceSelector = `div[data-row="${startRow}"][data-col="${startCol}"] img`;
+      const pieceSelector = `app-checkers-board-square[data-row="${startRow}"][data-col="${startCol}"] img`;
       let pieceElement = document.querySelector(pieceSelector) as HTMLElement;
 
       // get coordinates of the piece
@@ -280,16 +268,18 @@ class Animator {
         cachedPieceComputedStyle = {};
         Object.assign(cachedPieceComputedStyle, window.getComputedStyle(pieceElement));
       }
-      pieceElement.style.width = cachedPieceComputedStyle['width'];
+      //pieceElement.style.width = cachedPieceComputedStyle['width'];
       // pieceElement.style.paddingTop = cachedPieceComputedStyle.paddingTop;
       // pieceElement.style.paddingRight = cachedPieceComputedStyle.paddingRight;
       // pieceElement.style.paddingBottom = cachedPieceComputedStyle.paddingBottom;
       // pieceElement.style.paddingLeft = cachedPieceComputedStyle.paddingLeft;
 
       // set position to absolute
+      /*
       pieceElement.style.position = 'absolute';
       pieceElement.style.left = pieceOffset.left + 'px';
       pieceElement.style.top = pieceOffset.top + 'px';
+      */
 
       let leftMove = destSquareOffset.left - pieceOffset.left;
       let topMove = destSquareOffset.top - pieceOffset.top;
@@ -305,9 +295,11 @@ class Animator {
         if (step++ === steps){
           clearInterval(intervalId);
           // once its done, set position to static
+          /*
           pieceElement.style.position = 'static';
           pieceElement.style.left = '';
           pieceElement.style.top = '';
+          */
 
           const wasKing = board.whatsAtRowColumn(startRow, startCol).isKing();
           board.movePieceFromTo(startRow, startCol, row, col);
@@ -319,8 +311,10 @@ class Animator {
         }
         pieceOffset.left += leftMove;
         pieceOffset.top += topMove;
+        /*
         pieceElement.style.left = pieceOffset.left + 'px';
         pieceElement.style.top = pieceOffset.top + 'px';
+        */
       }, intervalTime);
 
     })
@@ -954,7 +948,7 @@ export class Game {
 
 
 function _getPieceContainerElement(row: number, col: number) : Element {
-  let result = document.querySelector(`div[data-row="${row}"][data-col="${col}"]`);
+  let result = document.querySelector(`app-checkers-board-square[data-row="${row}"][data-col="${col}"]`);
   if (!result) throw 'query failed';
   return result;
 }

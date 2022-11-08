@@ -13,7 +13,7 @@ import {strategyFactory} from "./strategies";
 import {Move} from "./move";
 
 const maxMovesAhead = 6;
-const DEBUG = true;
+const DEBUG = false;
 
 export class Evaluator {
   task: RecursiveTask;
@@ -40,7 +40,9 @@ export class Evaluator {
     return this.getBestFuture(this.task, board, strategicPlayer, opponent, 0)
       .then(future => {
         let tStop = self.performance.now();
-        console.log(`Future eval took ${tStop - tStart}`);
+        if (DEBUG){
+          console.log(`Future eval took ${tStop - tStart}`);
+        }
         return future;
       })
   }
@@ -129,9 +131,11 @@ export class Evaluator {
       }
 
       const opponentFutureDebugString = bestFuture.projectedOpponentFutureDebugString;
-      let f = `Chose ${this.futureDebugString(bestFuture)}\n  ${otherChoices}\n oppo: ${opponentFutureDebugString}`;
-      let fi = sr.indentString(f, movesAhead * 2);
-      console.log(fi);
+      if (DEBUG){
+        let f = `Chose ${this.futureDebugString(bestFuture)}\n  ${otherChoices}\n oppo: ${opponentFutureDebugString}`;
+        let fi = sr.indentString(f, movesAhead * 2);
+        console.log(fi);
+      }
     }
   }
 }

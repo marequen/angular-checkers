@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { SquarePlus } from "../squarePlus";
 import { BoardLocation } from "../../engine/checkersBase";
 
@@ -10,16 +10,16 @@ import { BoardLocation } from "../../engine/checkersBase";
 export class CheckersBoardRowComponent implements OnInit {
 
   @Input() iPieces: Array<SquarePlus> = [];
+  @Input() rowIndex: number = 0;
   @Output() squareClicked: EventEmitter<BoardLocation> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log('row init');
   }
-  /*
-  onSquareClicked(){
-    window.alert('onSquareClicked');
-    this.squareClicked.emit();
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('row', this.rowIndex, 'changed')
   }
-  */
+
 }
