@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import {SquareValue} from '../../checkersBase'
+import {SquareValue} from '../../engine/checkersBase'
 
 @Component({
   selector: 'app-checkers-piece',

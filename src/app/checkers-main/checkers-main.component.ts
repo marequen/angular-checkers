@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { theGame, theBoard } from '../../checkers';
-import { Square, SquareValue } from "../../checkersBase";
+import { theGame, theBoard } from '../../engine/checkers';
+import { Square, SquareValue } from "../../engine/checkersBase";
 
 @Component({
   selector: 'app-checkers-main',

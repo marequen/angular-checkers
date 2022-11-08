@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { BoardLocation, Square, SquareValue } from '../../checkersBase';
+import { BoardLocation, Square, SquareValue } from '../../engine/checkersBase';
 
 @Component({
   selector: 'app-checkers-board-square',
