@@ -11,9 +11,11 @@ import { SquarePlus } from "../squarePlus";
 export class CheckersMainComponent implements OnInit {
   restart = false;
   resign = false;
+  progress: number = 0;
 
   constructor() { 
-
+    theGame.progressCallback = this.onProgress.bind(this);
+    //theGame.moveFinishedCallback = this.onMoveFinished.bind(this);
   }
 
   ngOnInit(): void {
@@ -28,6 +30,13 @@ this.resign = true;
   onRestart(){
 window.alert('OnRestart')
 this.restart = true;
+  }
+
+  onProgress(p:number){
+    this.progress = p * 100;
+  }
+  onMoveFinished(){
+
   }
 
 }

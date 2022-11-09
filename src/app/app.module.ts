@@ -13,6 +13,7 @@ import { CheckersBoardComponent } from './checkers-board/checkers-board.componen
 import { CheckersBoardSquareComponent } from './checkers-board-square/checkers-board-square.component';
 import { CheckersBoardRowComponent } from './checkers-board-row/checkers-board-row.component';
 import { CheckersPieceComponent } from './checkers-piece/checkers-piece.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { CheckersPieceComponent } from './checkers-piece/checkers-piece.componen
     CheckersBoardComponent,
     CheckersBoardSquareComponent,
     CheckersBoardRowComponent,
-    CheckersPieceComponent
+    CheckersPieceComponent,
+    ProgressBarComponent
   ],
   bootstrap: [
     AppComponent
