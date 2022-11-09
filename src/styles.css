@@ -208,6 +208,13 @@ app-checkers-board-square:before {
  border-width: 6px;
 }
 
+.fadeIn {
+  opacity: 0.0;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
+}
+
 app-checkers-piece {
   display: inline-block
 }

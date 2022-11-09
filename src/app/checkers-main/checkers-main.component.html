@@ -1,6 +1,10 @@
 <div id="mainContentRow">
   <div id="mainContentCol">
-    <app-progress-bar></app-progress-bar>
+    <app-progress-bar 
+    [style]="showProgress ? {opacity: 1} : {opacity: 0}"
+    [value]="progress"
+    class='fadeIn fullWidth' 
+    ></app-progress-bar>
     <app-checkers-control-panel
     (resign)="onResign()"
     (restart)="onRestart()"></app-checkers-control-panel>

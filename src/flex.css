@@ -1,0 +1,170 @@
+.flexRow {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row; }
+
+.flexWrapRow {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap; }
+
+.flexCol {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+
+.flexOn {
+  -webkit-box-flex: 1 1 auto;
+  -moz-box-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto; }
+
+.flexOff {
+  -webkit-box-flex: 0 0 auto;
+  -moz-box-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto; }
+
+.flexJustifyEnd {
+  -webkit-justify-content: flex-end;
+  -moz-justify-content: flex-end;
+  -ms-flex-pack: flex-end;
+  justify-content: flex-end; }
+
+.flexJustifyStart {
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-flex-pack: flex-start;
+  justify-content: flex-start; }
+
+.flexJustifyCenter {
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+.flexJustifySpaceBetween {
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-flex-pack: space-between;
+  justify-content: space-between; }
+
+.flexJustifySpaceAround {
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around; }
+
+.flexAlignItemsStart {
+  -webkit-align-items: flex-start;
+  -moz-align-items: flex-start;
+  -ms-align-items: flex-start;
+  align-items: flex-start; }
+
+.flexAlignItemsCenter {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center; }
+
+.flexAlignItemsEnd {
+  -webkit-align-items: flex-end;
+  -moz-align-items: flex-end;
+  -ms-align-items: flex-end;
+  align-items: flex-end; }
+
+.flexAlignContentStart {
+  -webkit-align-content: flex-start;
+  -moz-align-content: flex-start;
+  -ms-align-content: flex-start;
+  align-content: flex-start; }
+
+.flexAlignContentCenter {
+  -webkit-align-content: center;
+  -moz-align-content: center;
+  -ms-align-content: center;
+  align-content: center; }
+
+.flexAlignContentEnd {
+  -webkit-align-content: flex-end;
+  -moz-align-content: flex-end;
+  -ms-align-content: flex-end;
+  align-content: flex-end; }
+
+.flexAlignContentSpaceBetween {
+  -webkit-align-content: space-between;
+  -moz-align-content: space-between;
+  -ms-align-content: space-between;
+  align-content: space-between; }
+
+.flexAlignContentSpaceAround {
+  -webkit-align-content: space-around;
+  -moz-align-content: space-around;
+  -ms-align-content: space-around;
+  align-content: space-around; }
+
+.fullWidth {
+  width: 100%;
+  max-width: 100%; }
+
+.fullHeight {
+  height: 100%; }
+
+.flexInitialHeight {
+  flex: initial; }
+
+.flexMaxHeight {
+  flex: auto; }
+
+.flex {
+  display: flex; }
+
+/* requires parent to have display: flex */
+.flexCenter {
+  margin: auto; }
+
+.flexVCenter {
+  margin-top: auto;
+  margin-bottom: auto; }
+
+.flexHCenter {
+  margin-left: auto;
+  margin-right: auto; }
+
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.flexFillRemaining {
+  flex: 1 1 auto
+}
+.flexSizeToContent {
+  flex: 0 1 auto;
+}
+
+.hide {
+  display: none; }
+
+

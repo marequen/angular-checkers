@@ -33,7 +33,7 @@ export class CheckersBoardComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, gameService: GameService) { 
     this.game = gameService.getGame();
     this.game.boardInitializedCallback = this.onBoardInitialized.bind(this);
-    this.game.moveFinishedCallback = this.onMoveFinished.bind(this);
+    this.game.addEventListener('moveFinished', this.onMoveFinished.bind(this));
 
     let theBoard = this.game.getBoard();
     theBoard.animatePieceCallback = this.onAnimatePiece.bind(this);

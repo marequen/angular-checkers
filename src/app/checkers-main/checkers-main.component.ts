@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { theGame } from '../../engine/checkers';
 import { Square, SquareValue } from "../../engine/checkersBase";
 import { SquarePlus } from "../squarePlus";
@@ -12,10 +12,11 @@ export class CheckersMainComponent implements OnInit {
   restart = false;
   resign = false;
   progress: number = 0;
+  showProgress: boolean = false;
 
-  constructor() { 
+  constructor(private cdr: ChangeDetectorRef) { 
     theGame.progressCallback = this.onProgress.bind(this);
-    //theGame.moveFinishedCallback = this.onMoveFinished.bind(this);
+    theGame.addEventListener('moveFinished', this.onMoveFinished.bind(this));
   }
 
   ngOnInit(): void {
@@ -34,9 +35,12 @@ this.restart = true;
 
   onProgress(p:number){
     this.progress = p * 100;
+    this.showProgress = true;
+    this.cdr.detectChanges();
   }
-  onMoveFinished(){
 
+  onMoveFinished(){
+    this.showProgress = false;
   }
 
 }

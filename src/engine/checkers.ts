@@ -193,14 +193,13 @@ interface MoveResult {
   forcedJumpMoves: Array<SingleJumpMove>
 }
 
-export class Game {
+export class Game extends EventTarget {
   player: Player;
   opponent: Player;
   moves: Array<Move> = [];
 
   boardInitializedCallback: BasicCallback;
   progressCallback: (progress: number) => void;
-  moveFinishedCallback: BasicCallback;
   gameFinishedCallback: (player: Player | null, state: GameState) => void;
   gamePausedChangeCallback: (paused: boolean) => void;
 
@@ -221,9 +220,9 @@ export class Game {
   private _projectedNextMove: Move | undefined;
 
   constructor() {
+    super();
     this.boardInitializedCallback = noOp;
     this.progressCallback = noOp;
-    this.moveFinishedCallback = noOp;
     this.gameFinishedCallback = noOp;
     this.gamePausedChangeCallback = noOp;
     this.busy = false;
@@ -629,20 +628,25 @@ export class Game {
         break;
     }
   }
+
+  private _dispatchMoveFinishedEvent(){
+    this.dispatchEvent(new Event('moveFinished'))
+  }
+
   private _onWorkerError(error: Error){
     console.error(error);
     this.busy = false;
-    this.moveFinishedCallback();
+    this._dispatchMoveFinishedEvent();
   }
   private _onWorkerMessageError(error: Error){
     console.error('MessageError: ' + error);
     this.busy = false;
-    this.moveFinishedCallback();
+    this._dispatchMoveFinishedEvent();
   }
 
   private _onDrawResponse(ok: boolean){
     this.busy = false;
-    this.moveFinishedCallback();
+    this._dispatchMoveFinishedEvent();
     if (ok){
       this._finish(null, GameState.GAME_OVER_DRAW);
     } else {
@@ -673,7 +677,7 @@ export class Game {
           this.busy = false;
           this.moves.push(move);
           this._nextPlayerPieceType = srCheckers.opponentPieceType[player.pieceType];
-          this.moveFinishedCallback();
+          this._dispatchMoveFinishedEvent();
           this._serviceCommandQueue()
             .then( () => {
               this._doPostExecuteMoveAction(player);
