@@ -197,6 +197,7 @@ app-checkers-board-square:before {
 }
 .pieceSvg {
   display: block;
+  position: relative;
   width: 100%;
 }
 .pieceSvg.active {

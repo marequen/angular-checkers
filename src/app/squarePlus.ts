@@ -5,6 +5,7 @@ export class SquarePlus {
   active: boolean;
   highlighted: boolean;
   forcedJump: boolean;
+  animationData: { top: number, left: number} | null = null;
 
   constructor(s: Square){
     this.square = s;

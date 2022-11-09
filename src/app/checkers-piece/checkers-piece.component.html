@@ -1,4 +1,11 @@
 
-<img src="https://www.requenes.com/checkers/{{svgName}}" class="{{className}}">
+<img 
+  src="https://www.requenes.com/checkers/{{svgName}}" 
+  class="{{className}}"
+  (click)="toggle()"
+  [@openClose]="animationData ? {value:'open', 
+  params:{left: animationData.left, top:animationData.top}
+} : 'closed' "
+  >
 
 

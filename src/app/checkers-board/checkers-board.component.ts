@@ -36,6 +36,7 @@ export class CheckersBoardComponent implements OnInit {
     this.game.moveFinishedCallback = this.onMoveFinished.bind(this);
 
     let theBoard = this.game.getBoard();
+    theBoard.animatePieceCallback = this.onAnimatePiece.bind(this);
     theBoard.redrawSquareCallback = this.onRedrawSquare.bind(this);
     this.cdr = cdr;
   }
@@ -51,6 +52,12 @@ export class CheckersBoardComponent implements OnInit {
       }
       this.rows.push(row)
     }
+  }
+
+  onAnimatePiece(square: BoardLocation, left: number, top: number){
+    let piece = this.getSquare(square);
+    piece.animationData = {left:left, top:top};
+    this.cdr.detectChanges();
   }
 
   onRedrawSquare(square: BoardLocation){
