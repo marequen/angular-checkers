@@ -608,7 +608,12 @@ export class Game {
         playerType = message["data"]["player"];
         move = srCheckers.MoveFactory.create(message["data"]["move"]);
         if (move){
-          let projectedNextMove = srCheckers.MoveFactory.create(message["data"]["projectedOpponentMove"]);
+          let projectedNextMoveData = message["data"]["projectedOpponentMove"];
+          let projectedNextMove : Move | undefined = undefined;
+          if (projectedNextMoveData){
+            projectedNextMove = srCheckers.MoveFactory.create(projectedNextMoveData);
+          }
+
           if (playerType === this.player.pieceType){
             this._executeMove(this.player, move, projectedNextMove).then( noOp );
           } else {
@@ -656,7 +661,7 @@ export class Game {
     }
   }
 
-  private _executeMove(player: Player, move: Move, projectedNextMove?: Move ): Promise<void> {
+  private _executeMove(player: Player, move: Move, projectedNextMove?: Move | undefined): Promise<void> {
     sr.assert(!!player);
     sr.assert(!!move);
     this._debugPiece = null;
