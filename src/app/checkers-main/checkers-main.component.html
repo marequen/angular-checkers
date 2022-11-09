@@ -5,13 +5,8 @@
     [value]="progress"
     class='fadeIn fullWidth' 
     ></app-progress-bar>
-    <app-checkers-control-panel
-    (resign)="onResign()"
-    (restart)="onRestart()"></app-checkers-control-panel>
-    <app-checkers-board
-     [iRestart]="restart"
-     [iResign]="resign"
-     >
-    </app-checkers-board>
+    <div class='debug'>{{scoreMessage}}</div>
+    <app-checkers-control-panel></app-checkers-control-panel>
+    <app-checkers-board></app-checkers-board>
   </div>
 </div>

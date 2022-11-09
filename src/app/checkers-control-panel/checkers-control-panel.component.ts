@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { theGame } from '../../engine/checkers';
 
 @Component({
   selector: 'app-checkers-control-panel',
@@ -7,13 +8,22 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class CheckersControlPanelComponent implements OnInit {
 
-  @Output() resign = new EventEmitter();
-  @Output() restart = new EventEmitter();
-
-
   constructor() { }
 
   ngOnInit(): void {
   }
+
+  onResign(){
+    if (confirm("Resign?")) {
+      theGame.resign();
+    }
+  }
+
+  onRestart(){
+    if (theGame.finished() || confirm("Restart?")) {
+      theGame.restart(true);
+    }
+  }
+
 
 }
