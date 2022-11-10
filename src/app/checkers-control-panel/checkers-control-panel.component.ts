@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import { theGame } from '../../engine/checkers';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
@@ -16,11 +16,9 @@ export class CheckersControlPanelComponent implements OnInit {
   }
 
   onResign(){
-    
     this.openConfirmDialog("Resign?", ()=>{
       theGame.resign();
     })
-    
   }
 
   onRestart(){
@@ -36,12 +34,11 @@ export class CheckersControlPanelComponent implements OnInit {
   openConfirmDialog(message: string, onConfirmCallback: ()=>void) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: {name: 'max', animal: 'dog', message: message},
+      data: {message: message},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //this.animal = result;
-      if (result === 'ok'){
+      if (result === true){
         console.log('The dialog was confirmed');
         onConfirmCallback();
       }
