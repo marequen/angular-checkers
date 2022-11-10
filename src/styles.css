@@ -218,3 +218,5 @@ app-checkers-board-square:before {
 app-checkers-piece {
   display: inline-block
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

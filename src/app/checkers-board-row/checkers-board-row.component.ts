@@ -19,7 +19,6 @@ export class CheckersBoardRowComponent implements OnInit {
   }
 
   onSquareAnimationDone(loc: BoardLocation){
-console.log('onSquareAnimationDone', loc);
     this.animationDone.emit(loc);
   }
 

@@ -4,6 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductAlertsComponent } from './product-alerts/product-alerts.component';
@@ -14,11 +16,13 @@ import { CheckersBoardSquareComponent } from './checkers-board-square/checkers-b
 import { CheckersBoardRowComponent } from './checkers-board-row/checkers-board-row.component';
 import { CheckersPieceComponent } from './checkers-piece/checkers-piece.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: ProductListComponent },
@@ -34,7 +38,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     CheckersBoardSquareComponent,
     CheckersBoardRowComponent,
     CheckersPieceComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    ConfirmDialogComponent
   ],
   bootstrap: [
     AppComponent
