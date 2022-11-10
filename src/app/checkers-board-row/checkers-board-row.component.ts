@@ -11,10 +11,16 @@ export class CheckersBoardRowComponent implements OnInit {
 
   @Input() iPieces: Array<SquarePlus> = [];
   @Output() squareClicked: EventEmitter<BoardLocation> = new EventEmitter();
+  @Output() animationDone = new EventEmitter;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onSquareAnimationDone(loc: BoardLocation){
+console.log('onSquareAnimationDone', loc);
+    this.animationDone.emit(loc);
   }
 
 }

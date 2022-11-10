@@ -2,6 +2,7 @@
   [value]="square.square.value"
   [active]="square.active"
   [animationData]="square.animationData"
+  (animationDone)="onPieceAnimationDone()"
   *ngIf="square.square.value > 1" 
   class="pieceSvgContainer"></app-checkers-piece>
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BoardLocation, Square, SquareValue } from '../../engine/checkersBase';
 import { SquarePlus } from "../squarePlus";
 
@@ -14,6 +14,7 @@ export class CheckersBoardSquareComponent implements OnInit {
   static dummySquare = new SquarePlus(new Square(SquareValue.EMPTY, new BoardLocation(0,0)));
 
   @Input() square: SquarePlus = CheckersBoardSquareComponent.dummySquare;
+  @Output() animationDone = new EventEmitter;
 
   color: string = '';
 
@@ -25,6 +26,10 @@ export class CheckersBoardSquareComponent implements OnInit {
 
   ngOnChanges(): void {
     this.color = 'square color' + this.square.square.color;
+  }
+
+  onPieceAnimationDone(){
+    this.animationDone.emit(this.square.square.loc);
   }
 
 }

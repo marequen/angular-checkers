@@ -41,7 +41,6 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   }
 
   onBoardInitialized(){
-    console.log('onBoardInitialized');
     this.rows = [];
     for (let i = 0; i < 8; i++) {
       let row: Array<SquarePlus> = [];
@@ -62,8 +61,6 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   onRedrawSquare(square: BoardLocation){
     let piece = this.game.getBoard().whatsAtRowColumn(square.row, square.col);
     this.rows[square.row][square.col] = new SquarePlus(piece);
-    console.log('onRedrawSquare', square);
-    console.log('rows', this.rows);
 
     // Since we land here via a callback, Angular doesn't get a change to run
     // change detection, so we force it.
@@ -86,6 +83,10 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.sizeBoard();
     window.onresize = this.sizeBoard.bind(this);
+  }
+
+  onRowAnimationDone(loc: BoardLocation){
+console.log('onRowAnimationDone', loc);
   }
 
   onSquareClicked(loc: BoardLocation){
@@ -241,14 +242,13 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
     if (topContentSize.contentHeight > topContentSize.contentWidth){
       // portrait
       extent = topContentSize.contentWidth;
-      console.log('topContentSize.contentHeight > topContentSize.contentWidth', extent);
+
     } else {
       // landscape (or square)
       let boardContainer =  domUtils.getElementByIdOrThrow('boardContainer');
       let boardContainerSize = domUtils.elementContentSize(boardContainer);
       extent = Math.min(boardContainerSize.contentHeight, topContentSize.contentWidth);
-      console.log('boardContainerSize', boardContainerSize, 'topContentSize', topContentSize);
-      console.log('topContentSize.contentHeight <= topContentSize.contentWidth', extent);
+
     }
     return Math.floor(extent);
   }

@@ -4,6 +4,7 @@
   [square]="square" 
   [attr.data-row]="square.square.loc.row"
   [attr.data-col]="square.square.loc.col"
+  (animationDone)="onSquareAnimationDone($event)"
   class="square color{{square.square.color}}"
   (click)="squareClicked.emit(square.square.loc)"
   >

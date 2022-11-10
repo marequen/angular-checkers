@@ -4,6 +4,7 @@
     <app-checkers-board-row 
       *ngFor="let row of rows; index as i" 
       [iPieces]="row"
+      (animationDone)="onRowAnimationDone($event)"
       (squareClicked)="onSquareClicked($event)"
       ></app-checkers-board-row>
 

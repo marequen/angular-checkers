@@ -6,6 +6,7 @@
   [@openClose]="animationData ? {value:'open', 
   params:{left: animationData.left, top:animationData.top}
 } : 'closed' "
+  (@openClose.done)="captureDoneEvent($event)"
   >
 
 

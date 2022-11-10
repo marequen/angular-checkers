@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   trigger,
   state,
   style,
   animate,
   transition,
+  AnimationEvent
   // ...
 } from '@angular/animations';
 import {SquareValue} from '../../engine/checkersBase'
@@ -36,12 +37,13 @@ import {SquareValue} from '../../engine/checkersBase'
         animate('0.5s')
       ]),
     ]),
-  ]
+  ],
 })
 export class CheckersPieceComponent implements OnInit {
   @Input() value: SquareValue = 0;
   @Input() active: boolean = false;
   @Input() animationData: { top: number, left: number} | null = null;
+  @Output() animationDone  = new EventEmitter;
 
   svgName: string = 'black';
   className: string = '';
@@ -54,6 +56,14 @@ export class CheckersPieceComponent implements OnInit {
 
   ngOnChanges(): void {
     this.setPieceSvgName()
+  }
+
+  captureStartEvent(event: AnimationEvent){
+    console.log('animation started')
+  }
+
+  captureDoneEvent(event: AnimationEvent){
+    this.animationDone.emit()
   }
 
   toggle(){
