@@ -17,6 +17,7 @@ import { CheckersBoardRowComponent } from './checkers-board-row/checkers-board-r
 import { CheckersPieceComponent } from './checkers-piece/checkers-piece.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     CheckersBoardRowComponent,
     CheckersPieceComponent,
     ProgressBarComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    AlertComponent
   ],
   bootstrap: [
     AppComponent

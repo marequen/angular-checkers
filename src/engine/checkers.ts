@@ -178,6 +178,7 @@ export class Game extends EventTarget {
   progressCallback: (progress: number) => void;
   gameFinishedCallback: (player: Player | null, state: GameState) => void;
   gamePausedChangeCallback: (paused: boolean) => void;
+  showAlertCallback: (message: string) => void;
 
   busy: boolean;
 
@@ -201,6 +202,7 @@ export class Game extends EventTarget {
     this.progressCallback = noOp;
     this.gameFinishedCallback = noOp;
     this.gamePausedChangeCallback = noOp;
+    this.showAlertCallback = (message: string) => window.alert(message);
     this.busy = false;
     this._gameData = null;
     this._gameState = GameState.GAME_NOT_STARTED;
@@ -732,7 +734,7 @@ export class Game extends EventTarget {
 
   private _showAlert(message: string){
        setTimeout(()=>{
-         window.alert(message);
+         this.showAlertCallback(message);
        }, 500);
   }
 }

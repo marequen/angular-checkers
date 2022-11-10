@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+
 import * as domUtils from '../../engine/domUtils';
 import { theGame, GameState } from '../../engine/checkers';
 import { Player , PieceType } from "../../engine/checkersBase";
-
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-checkers-main',
@@ -16,10 +18,11 @@ export class CheckersMainComponent implements OnInit {
   scoreMessage: string = '';
   boardExtent: string = '';
 
-  constructor(private cdr: ChangeDetectorRef) { 
+  constructor(private cdr: ChangeDetectorRef, public dialog: MatDialog) { 
     theGame.progressCallback = this.onProgress.bind(this);
     theGame.addEventListener('moveFinished', this.onMoveFinished.bind(this));
     theGame.gameFinishedCallback = this.onGameFinished.bind(this);
+    theGame.showAlertCallback = this.openAlert.bind(this);
   }
 
   ngOnInit(): void {
@@ -69,7 +72,7 @@ export class CheckersMainComponent implements OnInit {
         message += "It's a draw. Good game."
       }
       this.scoreMessage = scoreMessage;
-      window.alert(message);
+      this.openAlert(message);
   }
 
   static playerToString(player: Player){
@@ -91,4 +94,10 @@ export class CheckersMainComponent implements OnInit {
       + theBoard.getPieceCount(theGame.opponent.pieceType);
   }
 
+  openAlert(message: string) {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '250px',
+      data: {message: message},
+    });
+  }
 }
