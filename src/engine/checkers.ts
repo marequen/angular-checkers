@@ -32,10 +32,12 @@ function drawPiece(square: Square): string {
   return '';
 }
 
+export type BoardAnimationCallback = (square: BoardLocation, left: number, top: number) => Promise<void>;
+
 export class Board extends srCheckers.Board {
 
   redrawSquareCallback: (square: BoardLocation) => void = noOp;
-  animatePieceCallback: (square: BoardLocation, left: number, top: number) => void = noOp;
+  animatePieceCallback: BoardAnimationCallback | null = null;
 
   static override create(data: Object): Board {
     let result = new Board();

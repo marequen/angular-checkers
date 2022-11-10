@@ -166,7 +166,20 @@ export class Animator {
 
       let leftMove = destSquareOffset.left - pieceOffset.left;
       let topMove = destSquareOffset.top - pieceOffset.top;
-      board.animatePieceCallback(new BoardLocation(startRow, startCol), leftMove, topMove);
+
+      if (board.animatePieceCallback){
+        board.animatePieceCallback(new BoardLocation(startRow, startCol), leftMove, topMove).then( () => {
+          const wasKing = board.whatsAtRowColumn(startRow, startCol).isKing();
+          board.movePieceFromTo(startRow, startCol, row, col);
+          let movedPiece = board.whatsAtRowColumn(row, col);
+          if (wasKing !== movedPiece.isKing()){
+           board.redrawSquare(row, col);
+          }
+          resolve(movedPiece);
+        });
+        return;
+      }
+
       let steps = 60;
       let ttlTime = 500;
       let intervalTime = ttlTime / steps;

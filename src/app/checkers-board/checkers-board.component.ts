@@ -26,6 +26,7 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   highlightedSquares: Array<BoardLocation> = [];
   waitingToSelectAdditionalSquares: boolean = false;
   gPlayerPossibleJumpChains: Array<SingleJumpMove> = [];
+  animationPromiseResolver: any | null = null;
 
   game: Game;
 
@@ -52,10 +53,15 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onAnimatePiece(square: BoardLocation, left: number, top: number){
-    let piece = this.getSquare(square);
-    piece.animationData = {left:left, top:top};
-    this.cdr.detectChanges();
+  onAnimatePiece(square: BoardLocation, left: number, top: number) : Promise<void> {
+
+    return new Promise<void>((resolve, reject)=>{
+      let piece = this.getSquare(square);
+      piece.animationData = {left:left, top:top};
+      this.cdr.detectChanges();
+      this.animationPromiseResolver = resolve;
+    });
+
   }
 
   onRedrawSquare(square: BoardLocation){
@@ -86,7 +92,10 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   }
 
   onRowAnimationDone(loc: BoardLocation){
-console.log('onRowAnimationDone', loc);
+    if (this.animationPromiseResolver){
+      this.animationPromiseResolver();
+      this.animationPromiseResolver = null;
+    }
   }
 
   onSquareClicked(loc: BoardLocation){
