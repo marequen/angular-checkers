@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
-import { ProductListComponent } from './product-list/product-list.component';
-import { ProductAlertsComponent } from './product-alerts/product-alerts.component';
+
 import { CheckersMainComponent } from './checkers-main/checkers-main.component';
 import { CheckersControlPanelComponent } from './checkers-control-panel/checkers-control-panel.component';
 import { CheckersBoardComponent } from './checkers-board/checkers-board.component';
@@ -25,14 +23,9 @@ import { AlertComponent } from './alert/alert.component';
     BrowserAnimationsModule,
     MatDialogModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      { path: '', component: ProductListComponent },
-    ])
   ],
   declarations: [
     AppComponent,
-    ProductListComponent,
-    ProductAlertsComponent,
     CheckersMainComponent,
     CheckersControlPanelComponent,
     CheckersBoardComponent,
