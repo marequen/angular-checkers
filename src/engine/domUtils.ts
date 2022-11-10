@@ -30,3 +30,11 @@ export function elementContentSize(e: Element) : { contentWidth: number, content
     contentHeight: e.clientHeight - stringToFloatOrZero(paddingTop) - stringToFloatOrZero(paddingBottom)
   };
 }
+
+// https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
+export function srOffset(el: HTMLElement) {
+  let rect = el.getBoundingClientRect(),
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+}

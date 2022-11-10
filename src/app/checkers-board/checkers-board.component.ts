@@ -53,7 +53,7 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onAnimatePiece(square: BoardLocation, left: number, top: number) : Promise<void> {
+  onAnimatePiece(square: BoardLocation, pieceElement: HTMLElement, left: number, top: number) : Promise<void> {
 
     return new Promise<void>((resolve, reject)=>{
       let piece = this.getSquare(square);

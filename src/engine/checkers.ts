@@ -9,7 +9,7 @@ import {Move, SimpleMove, SingleJumpMove} from "./move"
 const DEBUG_TRACE = false;
 const REPORT_TO_MOTHER_SHIP = false;
 
-export type BoardAnimationCallback = (square: BoardLocation, left: number, top: number) => Promise<void>;
+export type BoardAnimationCallback = (square: BoardLocation, pieceElement: HTMLElement, left: number, top: number) => Promise<void>;
 
 export class Board extends srCheckers.Board {
 

@@ -2,19 +2,7 @@ import {Move, SimpleMove, SingleJumpMove} from "./move";
 import {BoardLocation, Square} from "./checkersBase";
 import * as srCheckers from "./checkersBase";
 import {Board, _getPieceContainerElement } from "./checkers";
-
-let cachedPieceWidth: string | undefined = undefined;
-window.onresize = () => {
-  cachedPieceWidth = undefined;
-};
-
-// https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-function srOffset(el: HTMLElement) {
-  let rect = el.getBoundingClientRect(),
-    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
-}
+import * as domUtils from "./domUtils";
 
 export class Animator {
 
@@ -140,26 +128,17 @@ export class Animator {
   static _movePiece(board: Board, startRow: number, startCol: number, row: number, col: number): Promise<Square> {
     return new Promise(resolve => {
       // get the piece element
-      const pieceSelector = `app-checkers-board-square[data-row="${startRow}"][data-col="${startCol}"] img`;
+      const pieceSelector = `.square[data-row="${startRow}"][data-col="${startCol}"] img`;
       let pieceElement = document.querySelector(pieceSelector) as HTMLElement;
 
       // get coordinates of the piece
-      let pieceOffset = srOffset(pieceElement);
+      let pieceOffset = domUtils.srOffset(pieceElement);
 
       // get the destination square element
       let destSquareElement = _getPieceContainerElement(row, col);
 
       // get coordinates of destination
-      let destSquareOffset = srOffset(destSquareElement as HTMLElement);
-
-      // Currently, the piece's CSS style rules define padding as a percentage.
-      // So when we change position to absolute, it padding balloons way up
-      // ('cause the nearest sized parent changed???). To compensate, set the
-      // padding to fixed values.
-      if (cachedPieceWidth === undefined){
-        const cs = window.getComputedStyle(pieceElement);
-        cachedPieceWidth = cs.getPropertyValue('width');
-      }
+      let destSquareOffset = domUtils.srOffset(destSquareElement as HTMLElement);
 
       let leftMove = destSquareOffset.left - pieceOffset.left;
       let topMove = destSquareOffset.top - pieceOffset.top;
@@ -175,8 +154,7 @@ export class Animator {
       }
 
       if (board.animatePieceCallback){
-        board.animatePieceCallback(new BoardLocation(startRow, startCol), leftMove, topMove).then( onPieceMoveDone );
-        return;
+        board.animatePieceCallback(new BoardLocation(startRow, startCol), pieceElement, leftMove, topMove).then( onPieceMoveDone );
       } else {
         onPieceMoveDone();
       }
