@@ -9,29 +9,6 @@ import {Move, SimpleMove, SingleJumpMove} from "./move"
 const DEBUG_TRACE = false;
 const REPORT_TO_MOTHER_SHIP = false;
 
-// https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-function srOffset(el: HTMLElement) {
-  let rect = el.getBoundingClientRect(),
-  scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
-}
-
-function drawPiece(square: Square): string {
-  const svgsPerSquareType = {
-    [SquareValue.BLACK] : 'black_piece.svg',
-    [SquareValue.BLACK_KING]:'black_king.svg',
-    [SquareValue.RED]:'red_piece.svg',
-    [SquareValue.RED_KING]:'red_king.svg'
-  };
-
-  const svg = svgsPerSquareType[square.value];
-  if (svg) {
-    return `<img src="${svg}" class="pieceSvg">`;
-  }
-  return '';
-}
-
 export type BoardAnimationCallback = (square: BoardLocation, left: number, top: number) => Promise<void>;
 
 export class Board extends srCheckers.Board {
@@ -69,11 +46,6 @@ export class Board extends srCheckers.Board {
 
   redrawSquare(row: number, col: number){
     this.redrawSquareCallback(new BoardLocation(row, col));
-    /*
-    let e = _getPieceContainerElement(row, col);
-    const piece = this.whatsAtRowColumn(row, col);
-    e.innerHTML = drawPiece(piece);
-    */
   }
 
   /** Functions used by editor.js -- maybe move these */
@@ -98,11 +70,6 @@ function noOp(){}
 
 type BasicCallback = () => void;
 type Command = () => void;
-
-let cachedPieceComputedStyle: sr.StringKeyedObject | undefined = undefined;
-window.onresize = () => {
-  cachedPieceComputedStyle = undefined;
-};
 
 //const worker = new Worker("checkersWorker.js", {type:'module'});
 const worker = new Worker(new URL('../app/checkers.worker', import.meta.url));

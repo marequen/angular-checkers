@@ -160,59 +160,26 @@ export class Animator {
         const cs = window.getComputedStyle(pieceElement);
         cachedPieceWidth = cs.getPropertyValue('width');
       }
-      if (cachedPieceWidth !== undefined){
-        pieceElement.style.width = cachedPieceWidth;
-      }
 
       let leftMove = destSquareOffset.left - pieceOffset.left;
       let topMove = destSquareOffset.top - pieceOffset.top;
 
-      if (board.animatePieceCallback){
-        board.animatePieceCallback(new BoardLocation(startRow, startCol), leftMove, topMove).then( () => {
-          const wasKing = board.whatsAtRowColumn(startRow, startCol).isKing();
-          board.movePieceFromTo(startRow, startCol, row, col);
-          let movedPiece = board.whatsAtRowColumn(row, col);
-          if (wasKing !== movedPiece.isKing()){
-           board.redrawSquare(row, col);
-          }
-          resolve(movedPiece);
-        });
-        return;
+      const onPieceMoveDone = ()=>{
+        const wasKing = board.whatsAtRowColumn(startRow, startCol).isKing();
+        board.movePieceFromTo(startRow, startCol, row, col);
+        let movedPiece = board.whatsAtRowColumn(row, col);
+        if (wasKing !== movedPiece.isKing()){
+         board.redrawSquare(row, col);
+        }
+        resolve(movedPiece);
       }
 
-      let steps = 60;
-      let ttlTime = 500;
-      let intervalTime = ttlTime / steps;
-      let step = 0;
-      leftMove = leftMove / steps;
-      topMove = topMove / steps;
-
-      // apply translation
-      let intervalId = setInterval(()=>{
-        if (step++ === steps){
-          clearInterval(intervalId);
-          // once its done, set position to static
-          /*
-          pieceElement.style.position = 'static';
-          pieceElement.style.left = '';
-          pieceElement.style.top = '';
-          */
-
-          const wasKing = board.whatsAtRowColumn(startRow, startCol).isKing();
-          board.movePieceFromTo(startRow, startCol, row, col);
-          let movedPiece = board.whatsAtRowColumn(row, col);
-          if (wasKing !== movedPiece.isKing()){
-           board.redrawSquare(row, col);
-          }
-          resolve(movedPiece);
-        }
-        pieceOffset.left += leftMove;
-        pieceOffset.top += topMove;
-        /*
-        pieceElement.style.left = pieceOffset.left + 'px';
-        pieceElement.style.top = pieceOffset.top + 'px';
-        */
-      }, intervalTime);
+      if (board.animatePieceCallback){
+        board.animatePieceCallback(new BoardLocation(startRow, startCol), leftMove, topMove).then( onPieceMoveDone );
+        return;
+      } else {
+        onPieceMoveDone();
+      }
 
     })
 
