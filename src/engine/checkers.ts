@@ -100,33 +100,7 @@ type Command = () => void;
 let cachedPieceComputedStyle: sr.StringKeyedObject | undefined = undefined;
 window.onresize = () => {
   cachedPieceComputedStyle = undefined;
-  sizeBoard();
 };
-
-function calcBoardExtent(){
-  let top =  domUtils.getElementByIdOrThrow('mainContentRow');
-  let topContentSize = domUtils.elementContentSize(top);
-  let extent;
-  if (topContentSize.contentHeight > topContentSize.contentWidth){
-    // portrait
-    extent = topContentSize.contentWidth;
-  } else {
-    // landscape (or square)
-    let boardContainer =  domUtils.getElementByIdOrThrow('boardContainer');
-    let boardContainerSize = domUtils.elementContentSize(boardContainer);
-    extent = Math.min(boardContainerSize.contentHeight, topContentSize.contentWidth);
-  }
-  return Math.floor(extent);
-}
-
-function sizeBoard(){
-  let boardElement = document.querySelector('.board') as HTMLElement;
-  let extent = calcBoardExtent() + 'px';
-  boardElement.style.width = extent;
-  boardElement.style.height = extent;
-}
-
-
 
 //const worker = new Worker("checkersWorker.js", {type:'module'});
 const worker = new Worker(new URL('../app/checkers.worker', import.meta.url));

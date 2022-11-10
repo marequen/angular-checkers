@@ -50,7 +50,6 @@ export class CheckersPieceComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('piece init')
   }
 
   ngOnChanges(): void {

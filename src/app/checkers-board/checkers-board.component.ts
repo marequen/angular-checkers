@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { SquarePlus } from "../squarePlus";
+import { StringKeyedObject } from "../../engine/sr";
 import { BoardLocation } from "../../engine/checkersBase";
 import { Game } from "../../engine/checkers";
 import { Move, SingleJumpMove, SimpleMove } from "../../engine/move"
@@ -15,10 +16,8 @@ import * as domUtils from "../../engine/domUtils";
   ]
 })
 
-export class CheckersBoardComponent implements OnInit {
-
-  @Input() iRestart = false;
-  @Input() iResign = false;
+export class CheckersBoardComponent implements OnInit, AfterViewInit {
+  boardStyle: StringKeyedObject = {};
 
   rows: Array< Array<SquarePlus> > = [];
 
@@ -79,18 +78,14 @@ export class CheckersBoardComponent implements OnInit {
 
     this.gPlayerPossibleJumpChains = theGame.player.getPossibleJumpMoveChains(theBoard);
     this.unhighlightSquares();
-    //updateScore();
-    //hideProgressMeter();
   }
 
   ngOnInit(): void {
   }
 
-  restart(){
-    window.alert('board restart')
-  }
-  resign(){
-    window.alert('board resign')
+  ngAfterViewInit() {
+    this.sizeBoard();
+    window.onresize = this.sizeBoard.bind(this);
   }
 
   onSquareClicked(loc: BoardLocation){
@@ -237,6 +232,36 @@ export class CheckersBoardComponent implements OnInit {
       jumpMoveSegment = jumpMoveSegment.getNextJump()
     }
     return true;
+  }
+
+  static calcBoardExtent(){
+    let top =  domUtils.getElementByIdOrThrow('mainContentRow');
+    let topContentSize = domUtils.elementContentSize(top);
+    let extent;
+    if (topContentSize.contentHeight > topContentSize.contentWidth){
+      // portrait
+      extent = topContentSize.contentWidth;
+      console.log('topContentSize.contentHeight > topContentSize.contentWidth', extent);
+    } else {
+      // landscape (or square)
+      let boardContainer =  domUtils.getElementByIdOrThrow('boardContainer');
+      let boardContainerSize = domUtils.elementContentSize(boardContainer);
+      extent = Math.min(boardContainerSize.contentHeight, topContentSize.contentWidth);
+      console.log('boardContainerSize', boardContainerSize, 'topContentSize', topContentSize);
+      console.log('topContentSize.contentHeight <= topContentSize.contentWidth', extent);
+    }
+    return Math.floor(extent);
+  }
+
+  sizeBoard(){
+    let boardExtent = CheckersBoardComponent.calcBoardExtent();
+    if (boardExtent > 0){
+      let boardExtentS = boardExtent + 'px';
+      this.boardStyle = {
+        width: boardExtentS, height: boardExtentS
+      }
+    }
+
   }
 
 }

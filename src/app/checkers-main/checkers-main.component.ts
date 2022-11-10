@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import * as domUtils from '../../engine/domUtils';
 import { theGame, GameState } from '../../engine/checkers';
 import { Player , PieceType } from "../../engine/checkersBase";
 
@@ -13,6 +14,7 @@ export class CheckersMainComponent implements OnInit {
   progress: number = 0;
   showProgress: boolean = false;
   scoreMessage: string = '';
+  boardExtent: string = '';
 
   constructor(private cdr: ChangeDetectorRef) { 
     theGame.progressCallback = this.onProgress.bind(this);

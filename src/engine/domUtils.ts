@@ -11,11 +11,22 @@ export function getAttributeOrThrow(e: HTMLElement | null, key: string): string 
   return result;
 }
 
+function stringToFloatOrZero(s: string){
+  let r = parseFloat(s);
+  return Number.isNaN(r ) ? 0 : r
+}
+
 export function elementContentSize(e: Element) : { contentWidth: number, contentHeight: number } {
   let cs = window.getComputedStyle(e);
-  let result = {
-    contentWidth: e.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight),
-    contentHeight: e.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+  let paddingLeft = cs.getPropertyValue('paddingLeft');
+  let paddingRight = cs.getPropertyValue('paddingRight');
+  let paddingTop = cs.getPropertyValue('paddingTop');
+  let paddingBottom = cs.getPropertyValue('paddingBottom');
+  if (e.clientWidth === 0){
+    console.log('clientWidth is zero', e);
+  }
+  return {
+    contentWidth: e.clientWidth - stringToFloatOrZero(paddingLeft) - stringToFloatOrZero(paddingRight),
+    contentHeight: e.clientHeight - stringToFloatOrZero(paddingTop) - stringToFloatOrZero(paddingBottom)
   };
-  return result;
 }
