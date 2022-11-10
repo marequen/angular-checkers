@@ -1,12 +1,9 @@
 import * as sr from './sr';
-import * as domUtils from './domUtils';
 import * as srCheckers from './checkersBase';
-import {BoardLocation, PieceType, Player, Square, SquareValue} from "./checkersBase";
+import {BoardLocation, PieceType, Player, Square} from "./checkersBase";
 import {Animator} from "./animator";
-import {Move, SimpleMove, SingleJumpMove} from "./move"
-//import * as srAjax from './ajax';
+import {Move, SingleJumpMove} from "./move"
 
-const DEBUG_TRACE = false;
 const REPORT_TO_MOTHER_SHIP = false;
 
 export type BoardAnimationCallback = (square: BoardLocation, pieceElement: HTMLElement, left: number, top: number) => Promise<void>;
@@ -207,7 +204,7 @@ export class Game extends EventTarget {
     theBoard.setTopPlayer(this.opponent);
     theBoard.initializePieces();
   }
-  
+
   getBoard(): Board {
     return theBoard;
   }
@@ -424,9 +421,9 @@ export class Game extends EventTarget {
     let state = GameData.serializeGame(this, this._gameData, false);
     let url = location.toString().replace(/[^/]+$/, '');
     url += 'storeGame.php';
-    //srAjax.send(JSON.stringify(state), url, result => {
-    //  console.log('send result:' + JSON.stringify(result));
-    //})
+    //  srAjax.send(JSON.stringify(state), url, result => {
+    //    console.log('send result:' + JSON.stringify(result));
+    //  })
   }
   
   load(file: File): Promise<void> {
@@ -557,7 +554,6 @@ export class Game extends EventTarget {
           if (projectedNextMoveData){
             projectedNextMove = srCheckers.MoveFactory.create(projectedNextMoveData);
           }
-
           if (playerType === this.player.pieceType){
             this._executeMove(this.player, move, projectedNextMove).then( noOp );
           } else {
@@ -573,11 +569,9 @@ export class Game extends EventTarget {
         break;
     }
   }
-
   private _dispatchMoveFinishedEvent(){
     this.dispatchEvent(new Event('moveFinished'))
   }
-
   private _onWorkerError(error: Error){
     console.error(error);
     this.busy = false;
@@ -708,7 +702,7 @@ export class Game extends EventTarget {
 
 
 export function _getPieceContainerElement(row: number, col: number) : Element {
-  let result = document.querySelector(`app-checkers-board-square[data-row="${row}"][data-col="${col}"]`);
+  let result = document.querySelector(`.square[data-row="${row}"][data-col="${col}"]`);
   if (!result) throw 'query failed';
   return result;
 }
