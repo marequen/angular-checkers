@@ -68,9 +68,6 @@ function noOp(){}
 type BasicCallback = () => void;
 type Command = () => void;
 
-//const worker = new Worker("checkersWorker.js", {type:'module'});
-const worker = new Worker(new URL('../app/checkers.worker', import.meta.url));
-
 export var theBoard = new Board();
 
 export enum GameState {
@@ -159,6 +156,7 @@ export class Game extends EventTarget {
   private _debugPiece: BoardLocation | null;
   private _saveObjectUrlString: string;
   private _projectedNextMove: Move | undefined;
+  private _worker: Worker | undefined;
 
   constructor() {
     super();
@@ -181,12 +179,6 @@ export class Game extends EventTarget {
     this._debugPiece = null;
     this._saveObjectUrlString = '';
 
-    worker.addEventListener('message', this._onWorkerMessage.bind(this));
-    // @ts-ignore
-    worker.addEventListener('error', this._onWorkerError.bind(this));
-    // @ts-ignore
-    worker.addEventListener('messageerror', this._onWorkerMessageError.bind(this));
-
     const playerPieceType = PieceType.BLACK;//sr.arrayPickRandom([srCheckers.PieceType.RED, srCheckers.PieceType.BLACK]);
     this.player = new Player(playerPieceType, 'Strategy004');
     this.opponent = new Player(srCheckers.opponentPieceType[playerPieceType], 'Strategy005');
@@ -207,6 +199,16 @@ export class Game extends EventTarget {
 
   getBoard(): Board {
     return theBoard;
+  }
+
+  setWorker(worker: Worker){
+    sr.assert(this._worker === undefined, 'cannot set worker twice')
+    this._worker = worker;
+    worker.addEventListener('message', this._onWorkerMessage.bind(this));
+    // @ts-ignore
+    worker.addEventListener('error', this._onWorkerError.bind(this));
+    // @ts-ignore
+    worker.addEventListener('messageerror', this._onWorkerMessageError.bind(this));
   }
 
   paused(): boolean{
@@ -370,9 +372,10 @@ export class Game extends EventTarget {
   }
 
   _pickMove(player: Player){
+    if (this._worker === undefined) throw 'must call setWorker';
     this.busy = true;
     this.progressCallback(0);
-    worker.postMessage({
+    this._worker.postMessage({
        message:'startEvaluation',
        player: player.serialize(),
        board: theBoard.serialize(),
@@ -382,9 +385,10 @@ export class Game extends EventTarget {
   }
 
   _suggestADraw(player: Player){
+    if (this._worker === undefined) throw 'must call setWorker';
     this.busy = true;
     this.progressCallback(0);
-    worker.postMessage({
+    this._worker.postMessage({
       message:'drawRequest',
       player: player.serialize(),
       board: theBoard.serialize(),

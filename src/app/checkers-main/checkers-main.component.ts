@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 
-import * as domUtils from '../../engine/domUtils';
 import { theGame, GameState } from '../../engine/checkers';
 import { Player , PieceType } from "../../engine/checkersBase";
 import { AlertComponent } from '../alert/alert.component';
@@ -26,6 +25,9 @@ export class CheckersMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    theGame.setWorker(
+new Worker(new URL('../checkers.worker', import.meta.url)));
+
     theGame.start();
   }
 
