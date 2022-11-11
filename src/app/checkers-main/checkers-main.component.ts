@@ -13,6 +13,7 @@ import { AlertComponent } from '../alert/alert.component';
 export class CheckersMainComponent implements OnInit {
 
   instructionsOpacity: number = 1;
+  playerColor: string = '';
   progress: number = 0;
   progressOpacity: number = 0;
   scoreMessage: string = '';
@@ -26,9 +27,9 @@ export class CheckersMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.syncUiToGame();
     theGame.setWorker(
 new Worker(new URL('../checkers.worker', import.meta.url)));
-
     theGame.start();
   }
 
@@ -100,19 +101,19 @@ new Worker(new URL('../checkers.worker', import.meta.url)));
     this.progressOpacity = 0;
     this.instructionsOpacity = 1;
   }
+
   syncUiToGame(){
+    const setPlayerColorText = ()=>{
+      this.playerColor = CheckersMainComponent.playerToString(theGame.player);
+    }
     const showInstructionsIfPlayerMovesFirst = () => {
       if (theGame.player.pieceType === PieceType.BLACK){
         this.instructionsOpacity = 1;
       }
     }
-    // setPlayerColorText();
-    // setAiVsAi();
-    // updatePlayerStrategy();
-    // updateOpponentStrategy();
+    setPlayerColorText();
     showInstructionsIfPlayerMovesFirst();
-    // initializeBoard();
-    // updateScore();
+    this.updateScore();
   }
   
   updateScore(){

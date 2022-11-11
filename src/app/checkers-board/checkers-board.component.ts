@@ -43,7 +43,7 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
 
   onBoardInitialized(){
     this.gPlayerPossibleJumpChains = this.game.player.getPossibleJumpMoveChains(this.game.getBoard());
-    
+
     this.rows = [];
     for (let i = 0; i < 8; i++) {
       let row: Array<SquarePlus> = [];

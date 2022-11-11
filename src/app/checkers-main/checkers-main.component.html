@@ -3,7 +3,7 @@
     <div id='sideContainer' class="flexSizeToContent">
       <div class="flexCol">
         <div style="position: relative">
-          <div id='instructions' class='fadeIn' [style]='{opacity: instructionsOpacity}'>Click a <span class='playerColor'></span> piece to select it, then click on an empty black square to move there.</div>
+          <div id='instructions' class='fadeIn' [style]='{opacity: instructionsOpacity}'>Click a <span class='playerColor'>{{playerColor}}</span> piece to select it, then click on an empty black square to move there.</div>
 
           <app-progress-bar 
           [style]="{opacity: progressOpacity}"
