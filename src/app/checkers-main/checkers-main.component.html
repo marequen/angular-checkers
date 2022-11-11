@@ -1,12 +1,20 @@
 <div id="mainContentRow">
   <div id="mainContentCol">
-    <app-progress-bar 
-    [style]="showProgress ? {opacity: 1} : {opacity: 0}"
-    [value]="progress"
-    class='fadeIn fullWidth' 
-    ></app-progress-bar>
-    <div class='debug'>{{scoreMessage}}</div>
-    <app-checkers-control-panel></app-checkers-control-panel>
+    <div id='sideContainer' class="flexSizeToContent">
+      <div class="flexCol">
+        <div style="position: relative">
+          <div id='instructions' class='fadeIn'>Click a <span class='playerColor'></span> piece to select it, then click on an empty black square to move there.</div>
+
+          <app-progress-bar 
+          [style]="showProgress ? {opacity: 1} : {opacity: 0}"
+          [value]="progress"
+          class='fadeIn fullWidth' 
+          ></app-progress-bar>
+        </div>
+        <div class='debug'>{{scoreMessage}}</div>
+        <app-checkers-control-panel></app-checkers-control-panel>
+      </div>
+    </div>
     <app-checkers-board id='boardContainer'></app-checkers-board>
   </div>
 </div>
