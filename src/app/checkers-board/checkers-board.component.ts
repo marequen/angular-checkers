@@ -32,7 +32,7 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef, gameService: GameService) { 
     this.game = gameService.getGame();
-    this.game.boardInitializedCallback = this.onBoardInitialized.bind(this);
+    this.game.addEventListener('boardInitialized', this.onBoardInitialized.bind(this));
     this.game.addEventListener('moveFinished', this.onMoveFinished.bind(this));
 
     let theBoard = this.game.getBoard();
@@ -42,6 +42,8 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   }
 
   onBoardInitialized(){
+    this.gPlayerPossibleJumpChains = this.game.player.getPossibleJumpMoveChains(this.game.getBoard());
+    
     this.rows = [];
     for (let i = 0; i < 8; i++) {
       let row: Array<SquarePlus> = [];

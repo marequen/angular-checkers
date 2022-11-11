@@ -12,16 +12,17 @@ import { AlertComponent } from '../alert/alert.component';
 })
 export class CheckersMainComponent implements OnInit {
 
+  instructionsOpacity: number = 1;
   progress: number = 0;
-  showProgress: boolean = false;
+  progressOpacity: number = 0;
   scoreMessage: string = '';
-  boardExtent: string = '';
 
   constructor(private cdr: ChangeDetectorRef, public dialog: MatDialog) { 
     theGame.progressCallback = this.onProgress.bind(this);
     theGame.addEventListener('moveFinished', this.onMoveFinished.bind(this));
     theGame.gameFinishedCallback = this.onGameFinished.bind(this);
     theGame.showAlertCallback = this.openAlert.bind(this);
+    theGame.addEventListener('boardInitialized', this.onBoardInitialized.bind(this));
   }
 
   ngOnInit(): void {
@@ -31,15 +32,19 @@ new Worker(new URL('../checkers.worker', import.meta.url)));
     theGame.start();
   }
 
+  onBoardInitialized(){
+    this.syncUiToGame()
+  }
+
   onProgress(p:number){
     this.progress = p * 100;
-    this.showProgress = true;
+    this.showProgressMeter();
     this.cdr.detectChanges();
   }
 
   onMoveFinished(){
     this.updateScore();
-    this.showProgress = false;
+    this.hideProgressMeter();
   }
 
   onGameFinished(loser: Player | null, reason: GameState){
@@ -85,6 +90,29 @@ new Worker(new URL('../checkers.worker', import.meta.url)));
 
     const playerColor = pieceColorString[player.pieceType];
     return playerColor;
+  }
+
+  showProgressMeter(){
+    this.progressOpacity = 1;
+    this.instructionsOpacity = 0;
+  }
+  hideProgressMeter(){
+    this.progressOpacity = 0;
+    this.instructionsOpacity = 1;
+  }
+  syncUiToGame(){
+    const showInstructionsIfPlayerMovesFirst = () => {
+      if (theGame.player.pieceType === PieceType.BLACK){
+        this.instructionsOpacity = 1;
+      }
+    }
+    // setPlayerColorText();
+    // setAiVsAi();
+    // updatePlayerStrategy();
+    // updateOpponentStrategy();
+    showInstructionsIfPlayerMovesFirst();
+    // initializeBoard();
+    // updateScore();
   }
   
   updateScore(){

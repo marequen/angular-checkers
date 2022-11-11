@@ -65,7 +65,6 @@ export class Board extends srCheckers.Board {
 
 function noOp(){}
 
-type BasicCallback = () => void;
 type Command = () => void;
 
 export var theBoard = new Board();
@@ -135,7 +134,6 @@ export class Game extends EventTarget {
   opponent: Player;
   moves: Array<Move> = [];
 
-  boardInitializedCallback: BasicCallback;
   progressCallback: (progress: number) => void;
   gameFinishedCallback: (player: Player | null, state: GameState) => void;
   gamePausedChangeCallback: (paused: boolean) => void;
@@ -160,7 +158,6 @@ export class Game extends EventTarget {
 
   constructor() {
     super();
-    this.boardInitializedCallback = noOp;
     this.progressCallback = noOp;
     this.gameFinishedCallback = noOp;
     this.gamePausedChangeCallback = noOp;
@@ -229,7 +226,7 @@ export class Game extends EventTarget {
     this.busy = false;
     this._initializeMoves();
     this._initializePieces();
-    this.boardInitializedCallback();
+    this._dispatchBoardInitializedEvent();
     // Black always goes first
     if (this.opponent.pieceType === srCheckers.PieceType.BLACK){
       this._pickMove(this.opponent);
@@ -240,7 +237,7 @@ export class Game extends EventTarget {
 
   clear(){
     theBoard.clear();
-    this.boardInitializedCallback();
+    this._dispatchBoardInitializedEvent();
   }
   debugMovesFor(square: Square){
     this._debugPiece = square.loc;
@@ -488,7 +485,7 @@ export class Game extends EventTarget {
     } else {
       this._initializePieces();
     }
-    this.boardInitializedCallback();
+    this._dispatchBoardInitializedEvent();
   }
 
   private _playbackMoves(moves: Array<Move>){
@@ -576,6 +573,10 @@ export class Game extends EventTarget {
   private _dispatchMoveFinishedEvent(){
     this.dispatchEvent(new Event('moveFinished'))
   }
+  private _dispatchBoardInitializedEvent(){
+    this.dispatchEvent(new Event('boardInitialized'))
+  }
+  
   private _onWorkerError(error: Error){
     console.error(error);
     this.busy = false;
