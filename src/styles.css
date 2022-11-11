@@ -149,6 +149,9 @@ app-checkers-board {
   box-sizing: border-box;
   max-width: 100%;
 }
+#boardContainer {
+  width: 100%;
+}
 #mainContentRow {
   box-sizing: border-box;
   padding: 1em;

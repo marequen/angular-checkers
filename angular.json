@@ -28,8 +28,8 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/flex.css",
-              "src/styles.css"
+              "src/engine/flex.css",
+              "src/engine/checkers.css"
             ],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json"

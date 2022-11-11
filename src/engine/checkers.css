@@ -1,0 +1,120 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0
+}
+/* https://stackoverflow.com/questions/7112471/how-can-i-disable-mobilesafaris-content-scaling-on-orientation-change */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+body, button.styled, select.styled {
+  font-family: Georgia;
+  font-size: 16px;
+}
+button.styled {
+  padding: 0.5em 1.5em 0.5em 1.5em;
+  margin: 0.5em;
+  -webkit-appearance: none;
+}
+select.styled {
+
+}
+#mainContentRow {
+  box-sizing: border-box;
+  padding: 1em;
+}
+#mainContentColumn {
+  overflow-x: hidden; /* prevent stretching to content size */
+  box-sizing: border-box;
+  max-width: 100%;
+  background-color: white;
+}
+#instructions {
+  padding: 0.5em;
+}
+#boardContainer {
+  overflow-y: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.board {
+  border: darkgoldenrod 4px solid;
+  box-sizing: border-box;
+}
+.boardRow {
+  height: fit-content;
+}
+.square {
+  display: inline-block;
+  border: burlywood 2px solid;
+  box-sizing: border-box;
+  width: 12.5%;
+  height: 12.5%;
+}
+
+.square:before {
+  content: "";
+  float: left;
+  padding-top: 100%;
+}
+
+.color0 {
+  background-color: #e33c3c;
+}
+.color1 {
+  background-color: #444242;
+}
+.square.color1.highlight {
+  background-color: #615e5e;
+}
+.square.color1.forcedJumpPiece {
+  background-color: #845151;
+}
+
+.pieceSvg {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  object-fit: cover;
+  float: left;
+  width: calc(100% - 14px);
+  margin: 5px;
+}
+.pieceSvg.active {
+  border: gray 2px solid;
+  border-radius: 50%;
+}
+.king {
+ border-width: 6px;
+}
+.pieceId {
+  display: none;
+  position: absolute;
+  left: calc(50% - 0.5em);
+  top: calc(50% - 0.5em);
+}
+.fadeIn {
+  opacity: 0.0;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
+}
+.debug  {
+  display: none !important;
+}
+.horzSpace {
+  width: 1rem;
+}
+@media screen and (min-aspect-ratio: 3/2){
+  #mainContentColumn {
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+  #sideContainer {
+    max-width: min(33%, 30rem);
+    padding-right: 1rem;
+  }
+}

@@ -11,23 +11,30 @@ export function getAttributeOrThrow(e: HTMLElement | null, key: string): string 
   return result;
 }
 
-function stringToFloatOrZero(s: string){
+function stringToFloatOr(s: string, defaultValue: number): number {
   let r = parseFloat(s);
   return Number.isNaN(r ) ? 0 : r
 }
 
-export function elementContentSize(e: Element) : { contentWidth: number, contentHeight: number } {
-  let cs = window.getComputedStyle(e);
-  let paddingLeft = cs.getPropertyValue('paddingLeft');
-  let paddingRight = cs.getPropertyValue('paddingRight');
-  let paddingTop = cs.getPropertyValue('paddingTop');
-  let paddingBottom = cs.getPropertyValue('paddingBottom');
-  if (e.clientWidth === 0){
-    console.log('clientWidth is zero', e);
-  }
+type TLRB = { left:number, top:number, right:number, bottom: number};
+
+function elementTLRB(e: HTMLElement, prefix: string) : TLRB {
+  const cs = window.getComputedStyle(e);
+  const defaultValue = stringToFloatOr(cs.getPropertyValue(prefix), 0);
   return {
-    contentWidth: e.clientWidth - stringToFloatOrZero(paddingLeft) - stringToFloatOrZero(paddingRight),
-    contentHeight: e.clientHeight - stringToFloatOrZero(paddingTop) - stringToFloatOrZero(paddingBottom)
+    left  : stringToFloatOr(cs.getPropertyValue(prefix+'Left'  ), defaultValue),
+    top   : stringToFloatOr(cs.getPropertyValue(prefix+'Top'   ), defaultValue),
+    right : stringToFloatOr(cs.getPropertyValue(prefix+'Right' ), defaultValue),
+    bottom: stringToFloatOr(cs.getPropertyValue(prefix+'Bottom'), defaultValue),
+  }
+}
+
+export function elementContentSize(e: HTMLElement) : { contentWidth: number, contentHeight: number } {
+  const padding = elementTLRB(e, 'padding');
+  const border = elementTLRB(e, 'border');
+  return {
+    contentWidth: e.offsetWidth - padding.left - border.right,
+    contentHeight: e.offsetHeight - padding.top - padding.bottom,
   };
 }
 

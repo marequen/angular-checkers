@@ -247,17 +247,17 @@ export class CheckersBoardComponent implements OnInit, AfterViewInit {
   static calcBoardExtent(){
     let top =  domUtils.getElementByIdOrThrow('mainContentRow');
     let topContentSize = domUtils.elementContentSize(top);
+    let boardContainer =  domUtils.getElementByIdOrThrow('boardContainer');
+    let boardContainerSize = domUtils.elementContentSize(boardContainer);
     let extent;
     if (topContentSize.contentHeight > topContentSize.contentWidth){
       // portrait
-      extent = topContentSize.contentWidth;
+      extent = Math.min(boardContainerSize.contentHeight, boardContainerSize.contentWidth);
+      console.log('calcBoardExtent', extent, boardContainerSize);
 
     } else {
       // landscape (or square)
-      let boardContainer =  domUtils.getElementByIdOrThrow('boardContainer');
-      let boardContainerSize = domUtils.elementContentSize(boardContainer);
       extent = Math.min(boardContainerSize.contentHeight, topContentSize.contentWidth);
-
     }
     return Math.floor(extent);
   }
