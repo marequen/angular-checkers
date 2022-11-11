@@ -130,8 +130,8 @@ export class Evaluator {
         })
       }
 
-      const opponentFutureDebugString = bestFuture.projectedOpponentFutureDebugString;
       if (DEBUG){
+        const opponentFutureDebugString = bestFuture.projectedOpponentFutureDebugString;
         let f = `Chose ${this.futureDebugString(bestFuture)}\n  ${otherChoices}\n oppo: ${opponentFutureDebugString}`;
         let fi = sr.indentString(f, movesAhead * 2);
         console.log(fi);

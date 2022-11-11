@@ -31,23 +31,23 @@ export class Animator {
     const wasKing = board.whatsAtRowColumn(move.startRow, move.startCol).isKing();
     return Animator._movePiece(board, move.startRow, move.startCol, move.targetRow, move.targetCol)
       .then( movedPiece =>{
-          move.kinged = !wasKing && movedPiece.isKing(); // Needed for undo
-          board.redrawSquare(move.startRow, move.startCol);
-          board.redrawSquare(move.targetRow, move.targetCol);
-          return Promise.resolve();
+        move.kinged = !wasKing && movedPiece.isKing(); // Needed for undo
+        board.redrawSquare(move.startRow, move.startCol);
+        board.redrawSquare(move.targetRow, move.targetCol);
+        return Promise.resolve();
       })
   }
 
   static undoSimpleMove(board: Board, move: Move){
     return Animator._movePiece(board, move.targetRow, move.targetCol, move.startRow, move.startCol)
       .then( _movedPiece =>{
-          if (move.kinged){
-            board.dethrone(move.startRow, move.startCol);
-          }
-          move.kinged = false;
-          board.redrawSquare(move.startRow, move.startCol);
-          board.redrawSquare(move.targetRow, move.targetCol);
-          return Promise.resolve( _movedPiece );
+        if (move.kinged){
+          board.dethrone(move.startRow, move.startCol);
+        }
+        move.kinged = false;
+        board.redrawSquare(move.startRow, move.startCol);
+        board.redrawSquare(move.targetRow, move.targetCol);
+        return Promise.resolve( _movedPiece );
       })
   }
 
@@ -59,38 +59,38 @@ export class Animator {
     const wasKing = board.whatsAtRowColumn(move.startRow, move.startCol).isKing();
     return Animator._movePiece(board, move.startRow, move.startCol, move.targetRow, move.targetCol)
       .then( movedPiece =>{
-          move.kinged = !wasKing && movedPiece.isKing(); // Needed for undo
+        move.kinged = !wasKing && movedPiece.isKing(); // Needed for undo
 
-          board.redrawSquare(move.startRow, move.startCol);
-          board.redrawSquare(move.targetRow, move.targetCol);
+        board.redrawSquare(move.startRow, move.startCol);
+        board.redrawSquare(move.targetRow, move.targetCol);
 
-          const jumpPiece = move.getJumpedPiece(board);
+        const jumpPiece = move.getJumpedPiece(board);
 //          sr.assert(jumpPiece, `no jumped piece`);
-          move.jumpedPieceWasKing = jumpPiece.isKing();
+        move.jumpedPieceWasKing = jumpPiece.isKing();
 
-          board.capturePieceAtRowAndColumn(move.jumpRow, move.jumpCol);
-          board.redrawSquare(move.jumpRow, move.jumpCol);
-          return Promise.resolve(movedPiece);
+        board.capturePieceAtRowAndColumn(move.jumpRow, move.jumpCol);
+        board.redrawSquare(move.jumpRow, move.jumpCol);
+        return Promise.resolve(movedPiece);
       })
   }
 
   static undoSingleJumpMoveSegment(board: Board, move: SingleJumpMove): Promise<Square> {
     return Animator._movePiece(board, move.targetRow, move.targetCol, move.startRow, move.startCol)
       .then( movedPiece =>{
-          if (move.kinged){
-            board.dethrone(move.startRow, move.startCol);
-          }
-          move.kinged = false;
-          board.redrawSquare(move.startRow, move.startCol);
-          board.redrawSquare(move.targetRow, move.targetCol);
+        if (move.kinged){
+          board.dethrone(move.startRow, move.startCol);
+        }
+        move.kinged = false;
+        board.redrawSquare(move.startRow, move.startCol);
+        board.redrawSquare(move.targetRow, move.targetCol);
 
-          const opponentType = srCheckers.opponentPieceType[movedPiece.pieceType() as number];
-          board.uncapturePiece(opponentType, move.jumpRow, move.jumpCol, move.jumpedPieceWasKing);
-          board.redrawSquare(move.jumpRow, move.jumpCol);
-          return Promise.resolve(movedPiece);
+        const opponentType = srCheckers.opponentPieceType[movedPiece.pieceType() as number];
+        board.uncapturePiece(opponentType, move.jumpRow, move.jumpCol, move.jumpedPieceWasKing);
+        board.redrawSquare(move.jumpRow, move.jumpCol);
+        return Promise.resolve(movedPiece);
       })
   }
-  
+
   static undoJumpMoveChain(board: Board, move: SingleJumpMove): Promise<Square> {
     let segments: Array<SingleJumpMove> = [];
     move.forEachMove( moveSegment => segments.push(moveSegment));
@@ -148,7 +148,7 @@ export class Animator {
         board.movePieceFromTo(startRow, startCol, row, col);
         let movedPiece = board.whatsAtRowColumn(row, col);
         if (wasKing !== movedPiece.isKing()){
-         board.redrawSquare(row, col);
+          board.redrawSquare(row, col);
         }
         resolve(movedPiece);
       }
