@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 
 import { theGame, GameState } from '../../engine/checkers';
-import { Player , PieceType } from "../../engine/checkersBase";
+import { Player , PieceType, pieceColorString } from "../../engine/checkersBase";
 import { AlertComponent } from '../alert/alert.component';
 
 @Component({
@@ -83,16 +83,6 @@ new Worker(new URL('../checkers.worker', import.meta.url)));
       this.openAlert(message);
   }
 
-  static playerToString(player: Player){
-    let temp2 = [];
-    temp2[PieceType.RED] = 'red';
-    temp2[PieceType.BLACK] = 'black';
-    const pieceColorString = temp2;
-
-    const playerColor = pieceColorString[player.pieceType];
-    return playerColor;
-  }
-
   showProgressMeter(){
     this.progressOpacity = 1;
     this.instructionsOpacity = 0;
@@ -104,7 +94,7 @@ new Worker(new URL('../checkers.worker', import.meta.url)));
 
   syncUiToGame(){
     const setPlayerColorText = ()=>{
-      this.playerColor = CheckersMainComponent.playerToString(theGame.player);
+      this.playerColor = pieceColorString[theGame.player.pieceType]
     }
     const showInstructionsIfPlayerMovesFirst = () => {
       if (theGame.player.pieceType === PieceType.BLACK){
@@ -119,9 +109,9 @@ new Worker(new URL('../checkers.worker', import.meta.url)));
   updateScore(){
     const theBoard = theGame.getBoard();
 
-    this.scoreMessage = CheckersMainComponent.playerToString(theGame.player) + ': '
+    this.scoreMessage = pieceColorString[theGame.player.pieceType] + ': '
       + theBoard.getPieceCount(theGame.player.pieceType) + ' '
-      + CheckersMainComponent.playerToString(theGame.opponent) + ': '
+      + pieceColorString[theGame.opponent.pieceType] + ': '
       + theBoard.getPieceCount(theGame.opponent.pieceType);
   }
 
